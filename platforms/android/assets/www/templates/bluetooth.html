@@ -1,0 +1,26 @@
+<ion-view view-title="bluetooth">
+    <ion-content>
+        <button ng-click="initialize()">initialize</button>
+        <button ng-click="enable()">enable</button>
+        <button ng-click="startScan()">startScan</button>
+        <p></p>
+        <button ng-click="isEnabled()">isEnabled</button>
+        <button ng-click="list()">list</button>
+        <button ng-click="disconnect()">disconnect</button>
+        <button ng-click="itsConnected()">itsConnected</button>
+        <p></p>
+        <label class="item item-input">
+            <span class="input-label">Write Text</span>
+            <input type="text" ng-model="textToSend">
+        </label>
+        <button class="button" ng-click="write(textToSend)">
+            Send
+        </button>
+        <div ng-repeat="device in pairDevices" ng-click="connect(device)">
+            <h2>{{device.name}}</h2>
+            <p>{{device.address}}</p>
+            <p>{{device.id}}</p>
+            <p>{{device.class}}</p>
+        </div>
+    </ion-content>
+</ion-view>

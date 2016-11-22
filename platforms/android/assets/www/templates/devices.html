@@ -1,0 +1,14 @@
+<ion-view view-title="devices">
+    <ion-content>
+        <h2 class="title">{{ 'devices-intro' | translate}}</h2>
+        <button class="button" ng-click="startSearchDevices()">
+            {{'devices-button-search--devices' | translate}}
+        </button>
+        <div ng-repeat="device in devices" ng-click="connectToDevice(device)">
+            <h4>{{device.name}}</h4>
+            <p>{{device.address}}</p>
+            <p>{{device.id}}</p>
+            <p>{{device.class}}</p>
+        </div>
+    </ion-content>
+</ion-view>
