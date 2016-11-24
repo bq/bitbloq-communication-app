@@ -1,41 +1,27 @@
-<ion-side-menus enable-menu-with-back-views="false">
-    <ion-side-menu-content>
-        <ion-nav-bar class="bar-stable">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
-            <ion-nav-buttons side="left">
-                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-                </button>
-            </ion-nav-buttons>
-            <ion-nav-buttons side="right">
-                <button class="button" ng-show="!common.itsConnected && !common.selectedDevice" ng-click="common.go('#/app/devices')">
-                    <i class="icon ion-alert-circled"></i>
-                </button>
-                <button class="button" ng-show="!common.itsConnected && common.selectedDevice" ng-click="refresh()">
-                    <i class="icon ion-refresh"></i>
-                </button>
-                <label class="color--red" ng-show="!common.itsConnected"> {{'menu-no--connection' | translate}} </label>
-                <label class="color--green" ng-show="common.itsConnected"> {{'menu-connected' | translate}} </label>
-            </ion-nav-buttons>
-        </ion-nav-bar>
-        <ion-nav-view name="menuContent"></ion-nav-view>
-    </ion-side-menu-content>
-    <ion-side-menu side="left">
-        <ion-header-bar class="bar-stable">
-            <h1 class="title">Menú</h1>
-        </ion-header-bar>
-        <ion-content>
-            <ion-list>
-                <ion-item menu-close href="#/app/devices">
-                    {{'devices-button-search--devices' | translate}}
-                </ion-item>
-                <ion-item menu-close href="#/app/buttonsPad">
-                    {{'menu-buttons' | translate}}
-                </ion-item>
-                <ion-item menu-close href="#/app/sound">
-                    {{'menu-sound' | translate}}
-                </ion-item>
-            </ion-list>
-        </ion-content>
-    </ion-side-menu>
-</ion-side-menus>
+<ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="common.go('#/app/devices')" ng-show="!common.itsConnected && !common.selectedDevice">
+            <i class="icon ion-alert-circled"></i>
+        </button>
+        <button class="button" ng-click="refresh()" ng-show="!common.itsConnected && common.selectedDevice">
+            <i class="icon ion-refresh"></i>
+        </button>
+        <label class="color color--red" ng-show="!common.itsConnected">
+            {{'menu-no--connection' | translate}}
+        </label>
+        <label class="color color--green" ng-show="common.itsConnected">
+            {{'menu-connected' | translate}}
+            to
+            {{common.selectedDevice.name}}
+        </label>
+    </ion-nav-buttons>
+</ion-nav-bar>
+<!--<ion-nav-view name="menuContent"></ion-nav-view>-->
+<ion-tabs class="tabs-icon-top tabs-positive">
+    <ion-tab href="#/app/main" icon="ion-ios-alarm" title="Main">
+        <ion-nav-view name="main-tab"></ion-nav-view>
+    </ion-tab>
+    <ion-tab href="#/app/devices" icon="ion-settings" title="Devices">
+        <ion-nav-view name="devices-tab"></ion-nav-view>
+    </ion-tab>
+</ion-tabs>

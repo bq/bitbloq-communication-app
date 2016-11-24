@@ -1,0 +1,21 @@
+<ion-view view-title="Bitbloq Communication App">
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider" ng-class="{'data-received':bluetoothData}" >
+                La placa está enviando...
+            </div>
+            <div class="item item-text-wrap">
+              {{bluetoothData}}
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider" ng-class="{'data-received':soundToPlay}" >
+                El dispositivo está emitiendo el sonido...
+            </div>
+            <div class="item item-text-wrap">
+              <i ng-class="soundToPlay?'ion-android-volume-up':'ion-android-volume-mute'" class="icon"></i><span class="soundPlayed">{{soundToPlay}}</span>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>
