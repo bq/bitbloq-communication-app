@@ -58,3 +58,53 @@
 .pane {
     background-color: #ebebeb !important;
 }
+#input_container {
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+#input {
+    height: 20px;
+    margin: 0;
+    padding-left: 30px;
+}
+#input_img {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    width: 10px;
+    height: 10px;
+}
+#input_speak {
+    float: right;
+}
+
+/* VOICE BAR */
+
+.speech {
+    border: 1px solid #DDD;
+    width: 300px;
+    padding: 0;
+    margin: 0
+}
+.speech input {
+    border: 0;
+    width: 240px;
+    display: inline-block;
+    height: 30px;
+    padding-left: 10px;
+}
+.speech-voice {
+    float: right;
+    width: 30px;
+}
+.speech-search {
+    float: left;
+    width: 15px;
+    margin-top: 8px;
+    margin-left: 5px;
+}
+.bulb-icon {
+    width: 25px;
+    margin-right: 5px;
+}

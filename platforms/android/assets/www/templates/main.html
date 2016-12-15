@@ -1,21 +1,60 @@
-<ion-view view-title="Bitbloq Communication App">
+<ion-view view-title="Bitbloq">
     <ion-content>
         <div class="card">
-            <div class="item item-divider" ng-class="{'data-received':bluetoothData}" >
+            <div class="item item-divider" ng-class="{'data-received':bluetoothData}">
                 La placa está enviando...
             </div>
             <div class="item item-text-wrap">
-              {{bluetoothData}}
+                {{bluetoothData}}
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider" ng-class="{'data-received':soundToPlay}" >
+            <div class="item item-divider" ng-class="{'data-received':soundToPlay}">
                 El dispositivo está emitiendo el sonido...
             </div>
             <div class="item item-text-wrap">
-              <i ng-class="soundToPlay?'ion-android-volume-up':'ion-android-volume-mute'" class="icon"></i><span class="soundPlayed">{{soundToPlay}}</span>
+                <i class="icon" ng-class="soundToPlay?'ion-android-volume-up':'ion-android-volume-mute'"></i>
+                <span class="soundPlayed">{{soundToPlay}}</span>
             </div>
         </div>
+        <div class="card">
+            <div class="item item-divider" ng-class="{'data-received':soundToPlay}">
+                Envía comandos por voz a Bitbloq
+            </div>
+            <div class="item item-text-wrap">
+                <div class="speech">
+                    <img class="speech-search" ng-click="send(recognizedText)" src="img/lupa.png"/>
+                    <input id="transcript" name="q" placeholder="Envía comandos" type="text" value="{{ recognizedText }}"/>
+                    <img class="speech-voice" ng-click="record()" src="img/microphone.gif"/>
+                </div>
 
+                {{textSended}}
+
+                <!--
+                <button class="button" id="boton" ng-click="record()">Habla</button>
+                <input id="entrada" style="background-color: grey" type="text" value="{{ recognizedText }}"></input><BR>
+                  {{textSended}}<br>
+                <button class="button" id="boton" ng-click="send(recognizedText)">Enviar</button>-->
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider" ng-class="{'data-received':soundToPlay}">
+                Controla la linterna
+            </div>
+            <div class="item item-text-wrap">
+                <div ng-show="isOff">
+                    <img class="bulb-icon" src="img/bulb_turnoff.png">{{torchStatus}}
+                </div>
+                <div ng-show="isOn">
+                    <img class="bulb-icon" src="img/bulb_turnon.png">{{torchStatus}}
+                </div>
+
+                <!--
+                <button class="button" id="boton" ng-click="record()">Habla</button>
+                <input id="entrada" style="background-color: grey" type="text" value="{{ recognizedText }}"></input><BR>
+                  {{textSended}}<br>
+                <button class="button" id="boton" ng-click="send(recognizedText)">Enviar</button>-->
+            </div>
+        </div>
     </ion-content>
 </ion-view>
