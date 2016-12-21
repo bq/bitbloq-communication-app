@@ -88,5 +88,23 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-lightSensor": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/MangoTools/cordova-plugin-lightSensor.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.fabiorogeriosj.sensors": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/fabiorogeriosj/cordova-plugin-sensors.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

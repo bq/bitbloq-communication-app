@@ -1,5 +1,5 @@
 angular.module('bluetoothApp')
-    .controller('MainCtrl', function($scope, localStorage, bluetooth, $rootScope, $ionicPlatform) {
+    .controller('MainCtrl', function($scope, localStorage, bluetooth, $rootScope, $interval, $ionicPlatform) {
         var configT = {};
 
         $scope.soundToPlay = '';
@@ -39,6 +39,15 @@ angular.module('bluetoothApp')
             $scope.sendTwitter(data);
             $scope.$apply();
         });
+
+        $rootScope.$on('bluetoothSerial:readLAccel', function(evt, axis) {
+            console.log('axisReceived');
+            console.log(axis);
+            $scope.sendLAccel(axis);
+            $scope.$apply();
+        });
+
+
         $rootScope.$on('bluetoothSerial:playSound', function(evt, data) {
             $scope.bluetoothData = '';
             $scope.soundToPlay = data;
@@ -72,6 +81,7 @@ angular.module('bluetoothApp')
 
         $scope.recognizedText = "";
         $scope.textSended = "";
+
 
         $scope.record = function() {
             $scope.textSended = "Enviando mensaje";
@@ -172,8 +182,40 @@ angular.module('bluetoothApp')
                 });
             }
         };
+        $scope.sendLAccel = function(axis) {
+            document.addEventListener("deviceready", function() {
+                sensors.enableSensor("LINEAR_ACCELERATION");
+                sensors.getState(function(values) {
+                    console.log('values');
+                    console.log(values);
+                    var accel;
+                    switch (axis) {
+                        case "x":
+                            accel = values[0];
+                            break;
+                        case "y":
+                            accel = values[1];
+                            break;
+                        case "z":
+                            accel = values[2];
+                            break;
+                    }
+                    console.log("hay acceeeel");
+                    if (!accel) {
+                        console.log("NAN!!!!");
+                        accel = "NaN";
+                    }
+                    console.log("accel: " + accel);
+                    bluetooth.write(accel.toString()).then(function() {
+                        //  $scope.textSended = 'Mensaje enviado';
+                        $scope.textSended = accel;
+                    }, function(error) {
+                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                    });
+                });
 
-
+            });
+        };
         $scope.twitterConfig = function(options) {
             configT = window.twitterWrap.configTwitter(options);
         };
@@ -201,6 +243,11 @@ angular.module('bluetoothApp')
                 }, toggleTime * 1000);
             }
         };
+
+
+
+
+
         document.addEventListener("backbutton", function() {
             // pass exitApp as callbacks to the switchOff method
             window.plugins.flashlight.switchOff(exitApp, exitApp);

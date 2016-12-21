@@ -47,6 +47,10 @@ angular.module('bluetoothApp')
                         case 'twitterSend':
                             $rootScope.$emit('bluetoothSerial:twitterSend', data.split(/-(.+)?/)[1]);
                             break;
+                        case 'readLAccel':
+                            console.log("aquiiii");
+                            $rootScope.$emit('bluetoothSerial:readLAccel', data.split(/-(.+)?/)[1]);
+                            break;
                         case '':
                             break;
 

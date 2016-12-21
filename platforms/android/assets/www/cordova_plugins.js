@@ -120,6 +120,22 @@ module.exports = [
             "cordova.plugins.Keyboard"
         ],
         "runs": true
+    },
+    {
+        "id": "cordova-plugin-lightSensor.light",
+        "file": "plugins/cordova-plugin-lightSensor/www/light.js",
+        "pluginId": "cordova-plugin-lightSensor",
+        "clobbers": [
+            "cordova-plugin-lightSensor"
+        ]
+    },
+    {
+        "id": "com.fabiorogeriosj.sensors.sensors",
+        "file": "plugins/com.fabiorogeriosj.sensors/www/sensors.js",
+        "pluginId": "com.fabiorogeriosj.sensors",
+        "clobbers": [
+            "sensors"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -135,7 +151,9 @@ module.exports.metadata =
     "cordova-plugin-splashscreen": "4.0.0",
     "cordova-plugin-statusbar": "2.2.0",
     "cordova-plugin-whitelist": "1.3.0",
-    "ionic-plugin-keyboard": "2.2.1"
+    "ionic-plugin-keyboard": "2.2.1",
+    "cordova-plugin-lightSensor": "0.2.1",
+    "com.fabiorogeriosj.sensors": "0.7.0"
 };
 // BOTTOM OF METADATA
 });

@@ -36,6 +36,12 @@
         },
         "org.apache.cordova.speech.speechrecognition": {
             "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+        },
+        "cordova-plugin-lightSensor": {
+            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+        },
+        "com.fabiorogeriosj.sensors": {
+            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
         }
     },
     "dependent_plugins": {
