@@ -41,9 +41,37 @@ angular.module('bluetoothApp')
         });
 
         $rootScope.$on('bluetoothSerial:readLAccel', function(evt, axis) {
-            console.log('axisReceived');
-            console.log(axis);
-            $scope.sendLAccel(axis);
+            sendLAccel(axis);
+            $scope.$apply();
+        });
+
+        $rootScope.$on('bluetoothSerial:readAccel', function(evt, axis) {
+            sendAccel(axis);
+            $scope.$apply();
+        });
+
+        $rootScope.$on('bluetoothSerial:readGravity', function(evt, axis) {
+            sendGravity(axis);
+            $scope.$apply();
+        });
+
+        $rootScope.$on('bluetoothSerial:readGyros', function(evt, axis) {
+            sendGyros(axis);
+            $scope.$apply();
+        });
+
+        $rootScope.$on('bluetoothSerial:readProx', function(evt, covered) {
+            sendProx(covered);
+            $scope.$apply();
+        });
+
+        $rootScope.$on('bluetoothSerial:readLight', function(evt) {
+            sendLight();
+            $scope.$apply();
+        });
+
+        $rootScope.$on('bluetoothSerial:readMagnetic', function(evt) {
+            sendMagnetic();
             $scope.$apply();
         });
 
@@ -182,9 +210,47 @@ angular.module('bluetoothApp')
                 });
             }
         };
-        $scope.sendLAccel = function(axis) {
+
+        function sendLAccel(axis) {
             document.addEventListener("deviceready", function() {
+                $scope.sensorRead = "ACELERÓMETRO para medir aceleración lineal";
                 sensors.enableSensor("LINEAR_ACCELERATION");
+                sensors.getState(function(values) {
+                    console.log('values');
+                    console.log(values);
+                    var laccel;
+                    switch (axis) {
+                        case "x":
+                            laccel = values[0];
+                            break;
+                        case "y":
+                            laccel = values[1];
+                            break;
+                        case "z":
+                            laccel = values[2];
+                            break;
+                    }
+                    console.log("hay acceeeel");
+                    if (!laccel) {
+                        console.log("NAN!!!!");
+                        laccel = "NaN";
+                    }
+                    console.log("laccel: " + laccel);
+                    bluetooth.write(laccel.toString()).then(function() {
+                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + laccel + ' (m/s²)';
+                    }, function(error) {
+                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                    });
+                });
+
+            });
+        }
+
+
+        function sendAccel(axis) {
+            document.addEventListener("deviceready", function() {
+                $scope.sensorRead = "ACELERÓMETRO para medir aceleración";
+                sensors.enableSensor("ACCELEROMETER");
                 sensors.getState(function(values) {
                     console.log('values');
                     console.log(values);
@@ -207,15 +273,198 @@ angular.module('bluetoothApp')
                     }
                     console.log("accel: " + accel);
                     bluetooth.write(accel.toString()).then(function() {
-                        //  $scope.textSended = 'Mensaje enviado';
-                        $scope.textSended = accel;
+                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + accel + ' (m/s²)';
                     }, function(error) {
                         alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
                     });
                 });
 
             });
-        };
+        }
+
+
+
+        function sendGravity(axis) {
+            document.addEventListener("deviceready", function(axis) {
+                $scope.sensorRead = "SENSOR DE GRAVEDAD";
+                sensors.enableSensor("GRAVITY");
+                sensors.getState(function(values) {
+                    console.log('values');
+                    console.log(values);
+                    var gravity;
+                    switch (axis) {
+                        case "x":
+                            gravity = values[0];
+                            break;
+                        case "y":
+                            gravity = values[1];
+                            break;
+                        case "z":
+                            gravity = values[2];
+                            break;
+                    }
+                    console.log("hay gravity");
+                    if (!gravity) {
+                        console.log("NAN!!!!");
+                        gravity = "NaN";
+                    }
+                    console.log("gravity: " + gravity);
+                    bluetooth.write(gravity.toString()).then(function() {
+                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + gravity + ' (m/s²)';
+                    }, function(error) {
+                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                    });
+                });
+
+            });
+        }
+
+        function sendGyros(axis) {
+            document.addEventListener("deviceready", function() {
+                $scope.sensorRead = "GIROSCOPIO";
+                sensors.enableSensor("GYROSCOPE");
+                sensors.getState(function(values) {
+                    console.log('values');
+                    console.log(values);
+                    var gyro;
+                    switch (axis) {
+                        case "x":
+                            gyro = values[0];
+                            break;
+                        case "y":
+                            gyro = values[1];
+                            break;
+                        case "z":
+                            gyro = values[2];
+                            break;
+                    }
+                    console.log("hay gyro");
+                    if (!gyro) {
+                        console.log("NAN!!!!");
+                        gyro = "NaN";
+                    }
+                    console.log("gyro: " + gyro);
+                    bluetooth.write(gyro.toString()).then(function() {
+                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + gyro + ' (rad/s)';
+                    }, function(error) {
+                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                    });
+                });
+
+            });
+        }
+
+        function sendProx(covered) {
+            console.log("el valor de covered");
+            console.log(covered);
+
+            //recibe covered,nCovered
+            document.addEventListener("deviceready", function() {
+                $scope.sensorRead = "SENSOR DE PROXIMIDAD";
+                sensors.enableSensor("PROXIMITY");
+                sensors.getState(function(values) {
+                    console.log("values");
+                    console.log(values);
+                    var isCovered;
+                    if (!values || values.length === 0) {
+                        console.log("NAN!!!!");
+                        isCovered = "NaN";
+                    } else {
+                        if (values[0] === 0) {
+                          //está tapado
+                            console.log("entro en el if");
+                            if (covered === 'covered') {
+                                isCovered = true;
+                                $scope.sensorValue = "el sensor está tapado";
+                            } else {
+                                isCovered = false;
+                                $scope.sensorValue = "el sensor está tapado";
+                            }
+                        } else {
+                          //no está tapado
+                            console.log("entro en el else");
+                            if (covered === 'covered') {
+                                isCovered = false;
+                                $scope.sensorValue = "el sensor no está tapado";
+                            } else {
+                                isCovered = true;
+                                $scope.sensorValue = "el sensor no está tapado";
+                            }
+                        }
+                    }
+                    console.log("isCovered");
+                    console.log(isCovered);
+                    bluetooth.write(isCovered.toString()).then(function() {
+                    }, function(error) {
+                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                    });
+                });
+            });
+        }
+
+
+
+        function sendLight() {
+            document.addEventListener("deviceready", function() {
+                $scope.sensorRead = "SENSOR DE LUZ";
+                sensors.enableSensor("LIGHT");
+                sensors.getState(function(values) {
+                    var light;
+                    if (!values || values.length === 0) {
+                        console.log("NAN!!!!");
+                        light = "NaN";
+                    } else {
+                        light = values[0];
+                    }
+                    console.log("light: " + light);
+                    bluetooth.write(light.toString()).then(function() {
+                        $scope.sensorValue = light + ' (lx)';
+                    }, function(error) {
+                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                    });
+                });
+
+            });
+        }
+
+
+
+        function sendMagnetic(axis) {
+            $scope.sensorRead = "SENSOR DE CAMPO MAGNÉTICO";
+            document.addEventListener("deviceready", function() {
+                sensors.enableSensor("MAGNETIC_FIELD");
+                sensors.getState(function(values) {
+                    console.log('values');
+                    console.log(values);
+                    var magnetic;
+                    switch (axis) {
+                        case "x":
+                            magnetic = values[0];
+                            break;
+                        case "y":
+                            magnetic = values[1];
+                            break;
+                        case "z":
+                            magnetic = values[2];
+                            break;
+                    }
+                    console.log("hay magnetic");
+                    if (!magnetic) {
+                        console.log("NAN!!!!");
+                        magnetic = "NaN";
+                    }
+                    console.log("magnetic: " + magnetic);
+                    bluetooth.write(magnetic.toString()).then(function() {
+                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + magnetic + ' (µT)';
+                    }, function(error) {
+                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                    });
+                });
+
+            });
+        }
+
+
         $scope.twitterConfig = function(options) {
             configT = window.twitterWrap.configTwitter(options);
         };
@@ -236,10 +485,10 @@ angular.module('bluetoothApp')
             }
             if (toggle) {
                 console.log('no hago nada');
-                //    clearInterval(toggle);
             } else {
                 toggle = setInterval(function() {
                     window.plugins.flashlight.toggle();
+                    $scope.torchStatus = 'La linterna está parpadeando';
                 }, toggleTime * 1000);
             }
         };

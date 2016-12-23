@@ -6,45 +6,56 @@
     padding-left: 7px;
     padding-right: 7px;
 }
+
 .color--red {
     color: #cc0001;
 }
+
 .color--green {
     color: #00e500;
 }
+
 .button-item {
     float: left;
     width: 31%;
     margin: 1em;
     text-align: right;
 }
+
 .button-item .remove-button {
     margin-top: 5px;
 }
+
 .test {
     background-color: red;
     width: 100%;
     height: 50px;
 }
+
 .soundPlayed {
     margin-left: 20px;
 }
+
 .data-received {
     color: white !important;
     background-color: #82ad3a !important;
 }
+
 .tabs-striped.tabs-positive .tabs {
     background-color: #82ad3a !important;
 }
+
 
 /* HEADER BAR */
 
 .bar.bar-stable {
     background-color: #373B44 !important;
 }
+
 .bar.bar-stable .title {
     color: white !important;
 }
+
 
 /* TABS BAR */
 
@@ -53,21 +64,25 @@
     background-color: #373B44 !important;
 }
 
+
 /* BACKGROUND */
 
 .pane {
     background-color: #ebebeb !important;
 }
+
 #input_container {
     position: relative;
     padding: 0;
     margin: 0;
 }
+
 #input {
     height: 20px;
     margin: 0;
     padding-left: 30px;
 }
+
 #input_img {
     position: absolute;
     bottom: 8px;
@@ -75,9 +90,11 @@
     width: 10px;
     height: 10px;
 }
+
 #input_speak {
     float: right;
 }
+
 
 /* VOICE BAR */
 
@@ -87,6 +104,7 @@
     padding: 0;
     margin: 0
 }
+
 .speech input {
     border: 0;
     width: 240px;
@@ -94,17 +112,41 @@
     height: 30px;
     padding-left: 10px;
 }
+
 .speech-voice {
     float: right;
     width: 30px;
 }
+
 .speech-search {
     float: left;
     width: 15px;
     margin-top: 8px;
     margin-left: 5px;
 }
+
 .bulb-icon {
     width: 25px;
     margin-right: 5px;
+}
+
+
+/*Devices page */
+
+.title {
+    margin-left: 15px;
+    margin-top: 30px;
+    color: #373B44;
+}
+
+#search-button {
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 90%;
+    background-color: #82ad3a;
+    color: white;
+}
+.device{
+  margin-left: 15px;
 }

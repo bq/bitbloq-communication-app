@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider" ng-class="{'data-received':soundToPlay}">
+            <div class="item item-divider">
                 El dispositivo está emitiendo el sonido...
             </div>
             <div class="item item-text-wrap">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider" ng-class="{'data-received':soundToPlay}">
+            <div class="item item-divider">
                 Envía comandos por voz a Bitbloq
             </div>
             <div class="item item-text-wrap">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider" ng-class="{'data-received':soundToPlay}">
+            <div class="item item-divider">
                 Controla la linterna
             </div>
             <div class="item item-text-wrap">
@@ -54,6 +54,15 @@
                 <input id="entrada" style="background-color: grey" type="text" value="{{ recognizedText }}"></input><BR>
                   {{textSended}}<br>
                 <button class="button" id="boton" ng-click="send(recognizedText)">Enviar</button>-->
+            </div>
+        </div>
+
+        <div class="card" ng-class="{'data-received':sensorRead}">
+            <div class="item item-divider">
+              {{sensorRead}}
+            </div>
+            <div class="item item-text-wrap">
+              Valor: {{sensorValue}}
             </div>
         </div>
     </ion-content>

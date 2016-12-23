@@ -48,8 +48,25 @@ angular.module('bluetoothApp')
                             $rootScope.$emit('bluetoothSerial:twitterSend', data.split(/-(.+)?/)[1]);
                             break;
                         case 'readLAccel':
-                            console.log("aquiiii");
                             $rootScope.$emit('bluetoothSerial:readLAccel', data.split(/-(.+)?/)[1]);
+                            break;
+                        case 'readAccel':
+                            $rootScope.$emit('bluetoothSerial:readAccel', data.split(/-(.+)?/)[1]);
+                            break;
+                        case 'readGravity':
+                            $rootScope.$emit('bluetoothSerial:readGravity', data.split(/-(.+)?/)[1]);
+                            break;
+                        case 'readGyros':
+                            $rootScope.$emit('bluetoothSerial:readGyros', data.split(/-(.+)?/)[1]);
+                            break;
+                        case 'readProx':
+                            $rootScope.$emit('bluetoothSerial:readProx', data.split(/-(.+)?/)[1]);
+                            break;
+                        case 'readLight':
+                            $rootScope.$emit('bluetoothSerial:readLight');
+                            break;
+                        case 'readLight':
+                            $rootScope.$emit('bluetoothSerial:readMagnetic', data.split(/-(.+)?/)[1]);
                             break;
                         case '':
                             break;
