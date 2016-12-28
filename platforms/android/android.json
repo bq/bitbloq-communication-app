@@ -57,6 +57,10 @@
                         {
                             "xml": "<feature name=\"Sensors\"><param name=\"android-package\" value=\"com.fabiorogeriosj.plugin.Sensors\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -141,6 +145,9 @@
             "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
         },
         "com.fabiorogeriosj.sensors": {
+            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+        },
+        "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
         }
     },
@@ -282,6 +289,15 @@
             "clobbers": [
                 "sensors"
             ]
+        },
+        {
+            "id": "cordova-plugin-inappbrowser.inappbrowser",
+            "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
+            "pluginId": "cordova-plugin-inappbrowser",
+            "clobbers": [
+                "cordova.InAppBrowser.open",
+                "window.open"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -297,6 +313,7 @@
         "cordova-plugin-whitelist": "1.3.0",
         "ionic-plugin-keyboard": "2.2.1",
         "cordova-plugin-lightSensor": "0.2.1",
-        "com.fabiorogeriosj.sensors": "0.7.0"
+        "com.fabiorogeriosj.sensors": "0.7.0",
+        "cordova-plugin-inappbrowser": "1.6.2-dev"
     }
 }

@@ -38679,15 +38679,10 @@ function extend() {
 
     }
 
-    function sendTwitter(message, TConfig) {
-      console.log('estoy aquí en send');
-
+    function sendTwitter(message, TConfig, callback) {
           TConfig.post('statuses/update', { status: message }, function(err, data, response) {
-            console.log(data)
+		callback(err, data, response);
         })
-
-
-
     }
 
     twitterWrap.configTwitter = configTwitter;

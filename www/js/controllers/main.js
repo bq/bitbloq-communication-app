@@ -1,5 +1,5 @@
 angular.module('bluetoothApp')
-    .controller('MainCtrl', function($scope, localStorage, bluetooth, $rootScope, $interval, $ionicPlatform) {
+    .controller('MainCtrl', function($scope, localStorage, bluetooth, $rootScope, $interval, $ionicPlatform, $ionicPopup, common) {
         var configT = {};
 
         $scope.soundToPlay = '';
@@ -12,7 +12,6 @@ angular.module('bluetoothApp')
         var intensityFloat = 100;
         var toggle;
         var toggleTime = 1;
-
 
         $rootScope.$on('bluetoothSerial:write', function(evt, data) {
             $scope.bluetoothData = data;
@@ -34,8 +33,6 @@ angular.module('bluetoothApp')
         });
 
         $rootScope.$on('bluetoothSerial:twitterSend', function(evt, data) {
-            console.log('data Twitter');
-            console.log(data);
             $scope.sendTwitter(data);
             $scope.$apply();
         });
@@ -371,7 +368,7 @@ angular.module('bluetoothApp')
                         isCovered = "NaN";
                     } else {
                         if (values[0] === 0) {
-                          //está tapado
+                            //está tapado
                             console.log("entro en el if");
                             if (covered === 'covered') {
                                 isCovered = true;
@@ -381,7 +378,7 @@ angular.module('bluetoothApp')
                                 $scope.sensorValue = "el sensor está tapado";
                             }
                         } else {
-                          //no está tapado
+                            //no está tapado
                             console.log("entro en el else");
                             if (covered === 'covered') {
                                 isCovered = false;
@@ -394,8 +391,7 @@ angular.module('bluetoothApp')
                     }
                     console.log("isCovered");
                     console.log(isCovered);
-                    bluetooth.write(isCovered.toString()).then(function() {
-                    }, function(error) {
+                    bluetooth.write(isCovered.toString()).then(function() {}, function(error) {
                         alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
                     });
                 });
@@ -470,13 +466,36 @@ angular.module('bluetoothApp')
         };
 
         $scope.sendTwitter = function(msg) {
-            if (configT) {
-                window.twitterWrap.sendTwitter(msg, configT);
+          var messages='';
+            if (configT.config) {
+                window.twitterWrap.sendTwitter(msg, configT, function(err, res, req) {
+                  console.log("req statusCode");
+                  console.log(req.statusCode);
+                    if (req.statusCode !== 200) {
+                      console.log("entro");
+                        switch (req.statusCode) {
+                            case 401:
+                                common.showAlert('Error enviando tweet', 'Credenciales de Twitter incorrectas');
+                                $scope.tweetMessage = 'Error: credenciales incorrectas';
+                                break;
+                            case 403:
+                                common.showAlert('Error enviando tweet', 'El estado es un duplicado');
+                                $scope.tweetMessage = 'Error: el estado es un duplicado';
+                                break;
+                        }
+                    }else{
+                      if(messages){
+                        messages = messages + ', ' + msg;
+                      } else{
+                        messages = msg;
+                      }
+                      $scope.tweetMessage = 'Se ha publicado en Twitter:' + messages;
+                    }
+                });
             } else {
-                alert('No has configurado las credenciales de Twitter');
+                common.showAlert('Error enviando tweet', 'No has configurado las credenciales de Twitter');
             }
         };
-
 
         $scope.toggle = function(time) {
             toggleTime = parseFloat(time);

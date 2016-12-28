@@ -38,25 +38,6 @@ angular.module('bluetoothApp', [
         controller: 'MenuCtrl'
     })
 
-    .state('app.buttonsPad', {
-        url: '/buttonsPad',
-        views: {
-            'buttons-tab': {
-                templateUrl: 'templates/buttonsPad.html',
-                controller: 'ButtonsPadCtrl'
-            }
-        }
-    })
-
-    .state('app.sound', {
-        url: '/sound',
-        views: {
-            'sound-tab': {
-                templateUrl: 'templates/sound.html',
-                controller: 'SoundCtrl'
-            }
-        }
-    })
 
     .state('app.devices', {
         url: '/devices',
@@ -85,6 +66,7 @@ angular.module('bluetoothApp', [
         });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/main');
+
 
     $translateProvider.translations('en', {
         'devices-intro': 'Pair your Bluetooth device, then search your device here, and click it to connect',

@@ -41,6 +41,9 @@
     <feature name="Sensors">
         <param name="android-package" value="com.fabiorogeriosj.plugin.Sensors" />
     </feature>
+    <feature name="InAppBrowser">
+        <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+    </feature>
     <name>bluetoothApp</name>
     <description>
         An Ionic Framework and Cordova project.

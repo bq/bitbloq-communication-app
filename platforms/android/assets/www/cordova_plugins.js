@@ -136,6 +136,15 @@ module.exports = [
         "clobbers": [
             "sensors"
         ]
+    },
+    {
+        "id": "cordova-plugin-inappbrowser.inappbrowser",
+        "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
+        "pluginId": "cordova-plugin-inappbrowser",
+        "clobbers": [
+            "cordova.InAppBrowser.open",
+            "window.open"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -153,7 +162,8 @@ module.exports.metadata =
     "cordova-plugin-whitelist": "1.3.0",
     "ionic-plugin-keyboard": "2.2.1",
     "cordova-plugin-lightSensor": "0.2.1",
-    "com.fabiorogeriosj.sensors": "0.7.0"
+    "com.fabiorogeriosj.sensors": "0.7.0",
+    "cordova-plugin-inappbrowser": "1.6.2-dev"
 };
 // BOTTOM OF METADATA
 });

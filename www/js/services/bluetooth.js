@@ -23,6 +23,8 @@ angular.module('bluetoothApp')
             $window.bluetoothSerial.connect(address, function() {
                 common.itsConnected = true;
                 $window.bluetoothSerial.subscribe('\n', function(data) {
+                  console.log("data");
+                  console.log(data);
                     switch (data.split(/-(.+)?/)[0]) {
                         case 'playSound':
                             $rootScope.$emit('bluetoothSerial:playSound', data.split(/-(.+)?/)[1]);

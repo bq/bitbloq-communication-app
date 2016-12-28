@@ -27,14 +27,7 @@
                     <input id="transcript" name="q" placeholder="Envía comandos" type="text" value="{{ recognizedText }}"/>
                     <img class="speech-voice" ng-click="record()" src="img/microphone.gif"/>
                 </div>
-
                 {{textSended}}
-
-                <!--
-                <button class="button" id="boton" ng-click="record()">Habla</button>
-                <input id="entrada" style="background-color: grey" type="text" value="{{ recognizedText }}"></input><BR>
-                  {{textSended}}<br>
-                <button class="button" id="boton" ng-click="send(recognizedText)">Enviar</button>-->
             </div>
         </div>
         <div class="card">
@@ -49,20 +42,27 @@
                     <img class="bulb-icon" src="img/bulb_turnon.png">{{torchStatus}}
                 </div>
 
-                <!--
-                <button class="button" id="boton" ng-click="record()">Habla</button>
-                <input id="entrada" style="background-color: grey" type="text" value="{{ recognizedText }}"></input><BR>
-                  {{textSended}}<br>
-                <button class="button" id="boton" ng-click="send(recognizedText)">Enviar</button>-->
             </div>
         </div>
 
-        <div class="card" ng-class="{'data-received':sensorRead}">
+        <div class="card">
             <div class="item item-divider">
-              {{sensorRead}}
+                Twitter
             </div>
             <div class="item item-text-wrap">
-              Valor: {{sensorValue}}
+                <div ng-if="tweetMessage" class="item item-text-wrap">
+                    {{tweetMessage}}
+                </div>
+
+            </div>
+        </div>
+        <div class="card" ng-class="{'data-received':sensorRead}">
+            <div class="item item-divider">
+                {{sensorRead}}
+            </div>
+            <div class="item item-text-wrap">
+                Valor:
+                {{sensorValue}}
             </div>
         </div>
     </ion-content>
