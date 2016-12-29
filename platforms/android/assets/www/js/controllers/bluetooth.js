@@ -1,4 +1,4 @@
-angular.module('bluetoothApp')
+angular.module('bitbloqCom')
   .controller('BluetoothCtrl', function($scope, $cordovaBluetoothLE, $cordovaBluetoothSerial) {
     console.log('BluetoothCtrl');
     console.log($cordovaBluetoothSerial);

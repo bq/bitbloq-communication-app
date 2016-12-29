@@ -7,6 +7,9 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.fabiorogeriosj.sensors": {
+            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+        },
         "cordova-plugin-bluetooth-serial": {
             "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
         },
@@ -17,6 +20,12 @@
             "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
         },
         "cordova-plugin-flashlight": {
+            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+        },
+        "cordova-plugin-lightSensor": {
             "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
         },
         "cordova-plugin-nativeaudio": {
@@ -35,15 +44,6 @@
             "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
         },
         "org.apache.cordova.speech.speechrecognition": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
-        },
-        "cordova-plugin-lightSensor": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
-        },
-        "com.fabiorogeriosj.sensors": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
-        },
-        "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
         }
     },

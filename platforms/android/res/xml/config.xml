@@ -1,22 +1,23 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.ionicframework.bluetoothapp123603" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <feature name="BluetoothSerial">
-        <param name="android-package" value="com.megster.cordova.BluetoothSerial" />
+    <feature name="Sensors">
+        <param name="android-package" value="com.fabiorogeriosj.plugin.Sensors" />
     </feature>
-    <feature name="NativeAudio">
-        <param name="android-package" value="com.rjfun.cordova.plugin.nativeaudio.NativeAudio" />
-    </feature>
-    <feature name="SpeechRecognition">
-        <param name="android-package" value="org.apache.cordova.speech.SpeechRecognition" />
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
     <feature name="Flashlight">
         <param name="android-package" value="nl.xservices.plugins.Flashlight" />
     </feature>
-    <feature name="Camera">
-        <param name="android-package" value="org.apache.cordova.camera" />
+    <feature name="InAppBrowser">
+        <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
-    <feature name="Device">
-        <param name="android-package" value="org.apache.cordova.device.Device" />
+    <feature name="Light">
+        <param name="android-package" value="tools.mango.cordova.plugin.android.LightSensorListener" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="NativeAudio">
+        <param name="android-package" value="com.rjfun.cordova.plugin.nativeaudio.NativeAudio" />
     </feature>
     <feature name="SplashScreen">
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
@@ -34,17 +35,13 @@
         <param name="android-package" value="io.ionic.keyboard.IonicKeyboard" />
         <param name="onload" value="true" />
     </feature>
-    <feature name="Light">
-        <param name="android-package" value="tools.mango.cordova.plugin.android.LightSensorListener" />
-        <param name="onload" value="true" />
+    <feature name="SpeechRecognition">
+        <param name="android-package" value="org.apache.cordova.speech.SpeechRecognition" />
     </feature>
-    <feature name="Sensors">
-        <param name="android-package" value="com.fabiorogeriosj.plugin.Sensors" />
+    <feature name="BluetoothSerial">
+        <param name="android-package" value="com.megster.cordova.BluetoothSerial" />
     </feature>
-    <feature name="InAppBrowser">
-        <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
-    </feature>
-    <name>bluetoothApp</name>
+    <name>Bitbloq Bluetooth</name>
     <description>
         An Ionic Framework and Cordova project.
     </description>
@@ -54,6 +51,7 @@
     <allow-navigation href="http://*/*" />
     <content src="index.html" />
     <access origin="*" />
+    <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
     <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
     <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
     <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />

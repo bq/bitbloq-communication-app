@@ -1,5 +1,5 @@
-angular.module('bluetoothApp')
-    .service('common', function($location, $ionicPopup) {
+angular.module('bitbloqCom')
+    .service('common', function($location, $ionicPopup, $filter) {
         console.log('common service loaded');
         var exports = {};
 
@@ -9,6 +9,14 @@ angular.module('bluetoothApp')
 
         exports.go = function(path) {
             $location.path(path);
+        };
+
+        exports.translate = $filter('translate');
+
+
+
+        exports.getAudioRoute = function(audio) {
+            return 'audio/' + audio.replace(/\s/g, '') + '.mp3';
         };
 
         exports.showAlert = function(title, msg) {

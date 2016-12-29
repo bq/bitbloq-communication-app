@@ -26,7 +26,7 @@
     "cordova-plugin-splashscreen": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-splashscreen@4.0.0"
+            "id": "cordova-plugin-splashscreen@4.0.1"
         },
         "is_top_level": true,
         "variables": {}
@@ -82,9 +82,8 @@
     },
     "cordova-plugin-flashlight": {
         "source": {
-            "type": "git",
-            "url": "https://github.com/EddyVerbruggen/Flashlight-PhoneGap-Plugin.git",
-            "subdir": "."
+            "type": "registry",
+            "id": "cordova-plugin-flashlight"
         },
         "is_top_level": true,
         "variables": {}

@@ -1,4 +1,4 @@
-angular.module('bluetoothApp')
+angular.module('bitbloqCom')
     .service('bluetooth', function($rootScope, $q, $window, common, $ionicLoading) {
         console.log('bluetooth service loaded');
         var exports = {};
@@ -23,8 +23,8 @@ angular.module('bluetoothApp')
             $window.bluetoothSerial.connect(address, function() {
                 common.itsConnected = true;
                 $window.bluetoothSerial.subscribe('\n', function(data) {
-                  console.log("data");
-                  console.log(data);
+                    console.log("data");
+                    console.log(data);
                     switch (data.split(/-(.+)?/)[0]) {
                         case 'playSound':
                             $rootScope.$emit('bluetoothSerial:playSound', data.split(/-(.+)?/)[1]);
@@ -57,6 +57,9 @@ angular.module('bluetoothApp')
                             break;
                         case 'readGravity':
                             $rootScope.$emit('bluetoothSerial:readGravity', data.split(/-(.+)?/)[1]);
+                            break;
+                        case 'readOrientation':
+                            $rootScope.$emit('bluetoothSerial:readOrientation', data.split(/-(.+)?/)[1]);
                             break;
                         case 'readGyros':
                             $rootScope.$emit('bluetoothSerial:readGyros', data.split(/-(.+)?/)[1]);

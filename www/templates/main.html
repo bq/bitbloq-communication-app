@@ -2,7 +2,7 @@
     <ion-content>
         <div class="card">
             <div class="item item-divider" ng-class="{'data-received':bluetoothData}">
-                La placa está enviando...
+                {{'device-board-is-sending' | translate}}
             </div>
             <div class="item item-text-wrap">
                 {{bluetoothData}}
@@ -10,7 +10,7 @@
         </div>
         <div class="card">
             <div class="item item-divider">
-                El dispositivo está emitiendo el sonido...
+              {{'device-sound' | translate}}
             </div>
             <div class="item item-text-wrap">
                 <i class="icon" ng-class="soundToPlay?'ion-android-volume-up':'ion-android-volume-mute'"></i>
@@ -19,7 +19,7 @@
         </div>
         <div class="card">
             <div class="item item-divider">
-                Envía comandos por voz a Bitbloq
+                {{'device-send-voice' | translate}}
             </div>
             <div class="item item-text-wrap">
                 <div class="speech">
@@ -32,7 +32,7 @@
         </div>
         <div class="card">
             <div class="item item-divider">
-                Controla la linterna
+                {{'device-torch' | translate}}
             </div>
             <div class="item item-text-wrap">
                 <div ng-show="isOff">
@@ -46,22 +46,22 @@
         </div>
 
         <div class="card">
-            <div class="item item-divider">
-                Twitter
+            <div class="item item-divider" ng-class="{'data-received':tweetMessage}">
+                {{'device-twitter' | translate}}
             </div>
             <div class="item item-text-wrap">
                 <div ng-if="tweetMessage" class="item item-text-wrap">
                     {{tweetMessage}}
                 </div>
-
             </div>
         </div>
-        <div class="card" ng-class="{'data-received':sensorRead}">
-            <div class="item item-divider">
+
+        <div class="card">
+            <div class="item item-divider" ng-class="{'data-received':sensorRead}">
                 {{sensorRead}}
             </div>
             <div class="item item-text-wrap">
-                Valor:
+                {{'device-sensor-value' | translate}}:
                 {{sensorValue}}
             </div>
         </div>

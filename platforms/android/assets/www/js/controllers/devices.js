@@ -1,4 +1,4 @@
-angular.module('bluetoothApp')
+angular.module('bitbloqCom')
   .controller('DevicesCtrl', function($scope, bluetooth, common) {
     console.log('DevicesCtrl');
 

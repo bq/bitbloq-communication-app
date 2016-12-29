@@ -1,11 +1,52 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
+        "id": "com.fabiorogeriosj.sensors.sensors",
+        "file": "plugins/com.fabiorogeriosj.sensors/www/sensors.js",
+        "pluginId": "com.fabiorogeriosj.sensors",
+        "clobbers": [
+            "sensors"
+        ]
+    },
+    {
         "id": "cordova-plugin-bluetooth-serial.bluetoothSerial",
         "file": "plugins/cordova-plugin-bluetooth-serial/www/bluetoothSerial.js",
         "pluginId": "cordova-plugin-bluetooth-serial",
         "clobbers": [
             "window.bluetoothSerial"
+        ]
+    },
+    {
+        "id": "cordova-plugin-device.device",
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "pluginId": "cordova-plugin-device",
+        "clobbers": [
+            "device"
+        ]
+    },
+    {
+        "id": "cordova-plugin-flashlight.Flashlight",
+        "file": "plugins/cordova-plugin-flashlight/www/Flashlight.js",
+        "pluginId": "cordova-plugin-flashlight",
+        "clobbers": [
+            "window.plugins.flashlight"
+        ]
+    },
+    {
+        "id": "cordova-plugin-inappbrowser.inappbrowser",
+        "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
+        "pluginId": "cordova-plugin-inappbrowser",
+        "clobbers": [
+            "cordova.InAppBrowser.open",
+            "window.open"
+        ]
+    },
+    {
+        "id": "cordova-plugin-lightSensor.light",
+        "file": "plugins/cordova-plugin-lightSensor/www/light.js",
+        "pluginId": "cordova-plugin-lightSensor",
+        "clobbers": [
+            "cordova-plugin-lightSensor"
         ]
     },
     {
@@ -15,6 +56,31 @@ module.exports = [
         "clobbers": [
             "window.plugins.NativeAudio"
         ]
+    },
+    {
+        "id": "cordova-plugin-splashscreen.SplashScreen",
+        "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+        "pluginId": "cordova-plugin-splashscreen",
+        "clobbers": [
+            "navigator.splashscreen"
+        ]
+    },
+    {
+        "id": "cordova-plugin-statusbar.statusbar",
+        "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+        "pluginId": "cordova-plugin-statusbar",
+        "clobbers": [
+            "window.StatusBar"
+        ]
+    },
+    {
+        "id": "ionic-plugin-keyboard.keyboard",
+        "file": "plugins/ionic-plugin-keyboard/www/android/keyboard.js",
+        "pluginId": "ionic-plugin-keyboard",
+        "clobbers": [
+            "cordova.plugins.Keyboard"
+        ],
+        "runs": true
     },
     {
         "id": "org.apache.cordova.speech.speechrecognition.SpeechRecognition",
@@ -79,91 +145,25 @@ module.exports = [
         "clobbers": [
             "SpeechGrammarList"
         ]
-    },
-    {
-        "id": "cordova-plugin-flashlight.Flashlight",
-        "file": "plugins/cordova-plugin-flashlight/www/Flashlight.js",
-        "pluginId": "cordova-plugin-flashlight",
-        "clobbers": [
-            "window.plugins.flashlight"
-        ]
-    },
-    {
-        "id": "cordova-plugin-device.device",
-        "file": "plugins/cordova-plugin-device/www/device.js",
-        "pluginId": "cordova-plugin-device",
-        "clobbers": [
-            "device"
-        ]
-    },
-    {
-        "id": "cordova-plugin-splashscreen.SplashScreen",
-        "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
-        "pluginId": "cordova-plugin-splashscreen",
-        "clobbers": [
-            "navigator.splashscreen"
-        ]
-    },
-    {
-        "id": "cordova-plugin-statusbar.statusbar",
-        "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
-        "pluginId": "cordova-plugin-statusbar",
-        "clobbers": [
-            "window.StatusBar"
-        ]
-    },
-    {
-        "id": "ionic-plugin-keyboard.keyboard",
-        "file": "plugins/ionic-plugin-keyboard/www/android/keyboard.js",
-        "pluginId": "ionic-plugin-keyboard",
-        "clobbers": [
-            "cordova.plugins.Keyboard"
-        ],
-        "runs": true
-    },
-    {
-        "id": "cordova-plugin-lightSensor.light",
-        "file": "plugins/cordova-plugin-lightSensor/www/light.js",
-        "pluginId": "cordova-plugin-lightSensor",
-        "clobbers": [
-            "cordova-plugin-lightSensor"
-        ]
-    },
-    {
-        "id": "com.fabiorogeriosj.sensors.sensors",
-        "file": "plugins/com.fabiorogeriosj.sensors/www/sensors.js",
-        "pluginId": "com.fabiorogeriosj.sensors",
-        "clobbers": [
-            "sensors"
-        ]
-    },
-    {
-        "id": "cordova-plugin-inappbrowser.inappbrowser",
-        "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
-        "pluginId": "cordova-plugin-inappbrowser",
-        "clobbers": [
-            "cordova.InAppBrowser.open",
-            "window.open"
-        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
+    "com.fabiorogeriosj.sensors": "0.7.0",
     "cordova-plugin-bluetooth-serial": "0.4.6",
-    "cordova-plugin-nativeaudio": "3.0.6",
     "cordova-plugin-compat": "1.1.0",
-    "org.apache.cordova.speech.speechrecognition": "0.1.2",
-    "cordova-plugin-flashlight": "3.2.0",
     "cordova-plugin-console": "1.0.4",
     "cordova-plugin-device": "1.1.3",
+    "cordova-plugin-flashlight": "3.2.0",
+    "cordova-plugin-inappbrowser": "1.6.2-dev",
+    "cordova-plugin-lightSensor": "0.2.1",
+    "cordova-plugin-nativeaudio": "3.0.6",
     "cordova-plugin-splashscreen": "4.0.0",
     "cordova-plugin-statusbar": "2.2.0",
     "cordova-plugin-whitelist": "1.3.0",
     "ionic-plugin-keyboard": "2.2.1",
-    "cordova-plugin-lightSensor": "0.2.1",
-    "com.fabiorogeriosj.sensors": "0.7.0",
-    "cordova-plugin-inappbrowser": "1.6.2-dev"
+    "org.apache.cordova.speech.speechrecognition": "0.1.2"
 };
 // BOTTOM OF METADATA
 });

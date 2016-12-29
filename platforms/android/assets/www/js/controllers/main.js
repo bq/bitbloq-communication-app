@@ -1,6 +1,5 @@
-angular.module('bluetoothApp')
-    .controller('MainCtrl', function($scope, localStorage, bluetooth, $rootScope, $interval, $ionicPlatform, $ionicPopup, common) {
-        var configT = {};
+angular.module('bitbloqCom')
+    .controller('MainCtrl', function($scope, localStorage, bluetooth, $rootScope, $interval, $ionicPlatform, $ionicPopup, common, $translate) {
 
         $scope.soundToPlay = '';
         $scope.loaded = {};
@@ -9,31 +8,38 @@ angular.module('bluetoothApp')
         $scope.torchStatus = 'La linterna está apagada';
         $scope.isOn = false;
         $scope.isOff = true;
+        $scope.recognizedText = "";
+        $scope.textSended = "";
+        var configT = {};
+        var flashTimer = false;
         var intensityFloat = 100;
-        var toggle;
+        var toggleTimer;
         var toggleTime = 1;
+        var toast = false;
+
+
 
         $rootScope.$on('bluetoothSerial:write', function(evt, data) {
             $scope.bluetoothData = data;
             $scope.$apply();
         });
         $rootScope.$on('bluetoothSerial:turnonFlashlight', function(evt, data) {
-            $scope.turnonFlashlight(data);
+            turnonFlashlight(data);
         });
         $rootScope.$on('bluetoothSerial:turnoffFlashlight', function(evt) {
-            $scope.turnoffFlashlight();
+            turnoffFlashlight();
         });
 
         $rootScope.$on('bluetoothSerial:toggleFlashlight', function(evt, data) {
-            $scope.toggle(data);
+            toggle(data);
         });
         $rootScope.$on('bluetoothSerial:twitterConfig', function(evt, data) {
-            $scope.twitterConfig(data);
+            twitterConfig(data);
             $scope.$apply();
         });
 
         $rootScope.$on('bluetoothSerial:twitterSend', function(evt, data) {
-            $scope.sendTwitter(data);
+            sendTwitter(data);
             $scope.$apply();
         });
 
@@ -51,7 +57,10 @@ angular.module('bluetoothApp')
             sendGravity(axis);
             $scope.$apply();
         });
-
+        $rootScope.$on('bluetoothSerial:readOrientation', function(evt, axis) {
+            sendOrientation(axis);
+            $scope.$apply();
+        });
         $rootScope.$on('bluetoothSerial:readGyros', function(evt, axis) {
             sendGyros(axis);
             $scope.$apply();
@@ -85,7 +94,7 @@ angular.module('bluetoothApp')
                 $scope.soundToPlay = '';
                 $scope.lastSoundPlayed = data;
             } else {
-                window.plugins.NativeAudio.preloadComplex(data, getAudioRoute(data), 1, 1, 0, function(msg) {
+                window.plugins.NativeAudio.preloadComplex(data, common.getAudioRoute(data), 1, 1, 0, function(msg) {
                     $scope.loaded[data.replace(/\s/g, '')] = true;
                     if ($scope.lastSoundPlayed.length > 0) {
                         window.plugins.NativeAudio.stop($scope.lastSoundPlayed);
@@ -100,29 +109,22 @@ angular.module('bluetoothApp')
 
         });
 
-        function getAudioRoute(audio) {
-            return 'audio/' + audio.replace(/\s/g, '') + '.mp3';
-        }
-
-        $scope.recognizedText = "";
-        $scope.textSended = "";
 
 
         $scope.record = function() {
-            $scope.textSended = "Enviando mensaje";
+            $scope.textSended = common.translate('device-sending-message');
             var recon = '';
-            //var recognition = new webkitSpeechRecognition(); //To Computer
-            var recognition = new SpeechRecognition(); // To Device
-            recognition.lang = 'es-ES';
+            var recognition = new SpeechRecognition();
+            recognition.lang = navigator.language || navigator.userLanguage;
 
             recognition.onresult = function(event) {
                 if (event.results.length > 0) {
                     $scope.recognizedText = event.results[0][0].transcript;
-                    recon = event.results[0][0].transcript.replace(/\s+/g, '');
+                    recon = event.results[0][0].transcript.replace(/\s+^/gm, '');
                     bluetooth.write(recon).then(function() {
-                        $scope.textSended = 'Mensaje enviado';
+                        $scope.textSended = common.translate('device-message-sended');
                     }, function(error) {
-                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
                     $scope.$apply();
                 }
@@ -133,13 +135,13 @@ angular.module('bluetoothApp')
 
         $scope.send = function(message) {
             bluetooth.write(message).then(null, function(error) {
-                alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
             });
         };
 
-        var flashTimer = false;
-        $scope.turnonFlashlight = function(intensity) {
-            console.log('turnonFlashlight');
+
+
+        function turnonFlashlight(intensity) {
             intensityFloat = parseFloat(intensity);
             if (intensityFloat > 100) {
                 intensityFloat = 100;
@@ -159,7 +161,7 @@ angular.module('bluetoothApp')
                             function() {
                                 $scope.isOn = true;
                                 $scope.isOff = false;
-                                $scope.torchStatus = 'La linterna está encendida';
+                                $scope.torchStatus = common.translate('device-torch-on');
                                 $scope.$apply();
                             }, // optional success callback
                             function() {}, // optional error callback
@@ -168,16 +170,13 @@ angular.module('bluetoothApp')
                             } // optional as well
                         );
                     } else {
-                        alert("Flashlight not available on this device");
+                        common.showAlert('Error', common.translate('device-flashlight-error'));
                     }
                 });
             }
-        };
+        }
 
-        //Poner en el if un alert de que no puede gestionar tanto
-        $scope.turnoffFlashlight = function() {
-            console.log('turnoffFlashlight');
-
+        function turnoffFlashlight() {
             if (flashTimer) {
                 console.log('está flashTimer en off');
             } else {
@@ -193,7 +192,7 @@ angular.module('bluetoothApp')
                             function(success) {
                                 $scope.isOn = false;
                                 $scope.isOff = true;
-                                $scope.torchStatus = 'La linterna está apagada';
+                                $scope.torchStatus = common.translate('device-torch-off');
                                 $scope.$apply();
                             },
                             function(error) {
@@ -202,11 +201,27 @@ angular.module('bluetoothApp')
                             }
                         );
                     } else {
-                        alert("Flashlight not available on this device");
+                        common.showAlert('Error', common.translate('device-flashlight-error'));
                     }
                 });
             }
-        };
+        }
+
+
+        function toggle(time) {
+            toggleTime = parseFloat(time);
+            if (toggleTime < 0.05) {
+                toggleTime = 0.05;
+            }
+            if (toggleTimer) {
+                console.log('no hago nada');
+            } else {
+                toggleTimer = setInterval(function() {
+                    window.plugins.flashlight.toggle();
+                    $scope.torchStatus = common.translate('device-torch-toggle');
+                }, toggleTime * 1000);
+            }
+        }
 
         function sendLAccel(axis) {
             document.addEventListener("deviceready", function() {
@@ -234,9 +249,9 @@ angular.module('bluetoothApp')
                     }
                     console.log("laccel: " + laccel);
                     bluetooth.write(laccel.toString()).then(function() {
-                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + laccel + ' (m/s²)';
+                        $scope.sensorValue =  common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + laccel + ' (m/s²)';
                     }, function(error) {
-                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
                 });
 
@@ -270,9 +285,9 @@ angular.module('bluetoothApp')
                     }
                     console.log("accel: " + accel);
                     bluetooth.write(accel.toString()).then(function() {
-                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + accel + ' (m/s²)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + accel + ' (m/s²)';
                     }, function(error) {
-                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
                 });
 
@@ -283,7 +298,7 @@ angular.module('bluetoothApp')
 
         function sendGravity(axis) {
             document.addEventListener("deviceready", function(axis) {
-                $scope.sensorRead = "SENSOR DE GRAVEDAD";
+                $scope.sensorRead = common.translate('device-sensor-gravity');
                 sensors.enableSensor("GRAVITY");
                 sensors.getState(function(values) {
                     console.log('values');
@@ -307,9 +322,48 @@ angular.module('bluetoothApp')
                     }
                     console.log("gravity: " + gravity);
                     bluetooth.write(gravity.toString()).then(function() {
-                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + gravity + ' (m/s²)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + gravity + ' (m/s²)';
                     }, function(error) {
-                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
+                    });
+                });
+
+            });
+        }
+
+        function sendOrientation(axis) {
+            console.log("axis dentro");
+            console.log(axis);
+            document.addEventListener("deviceready", function() {
+                $scope.sensorRead = common.translate('device-sensor-orientation');
+                sensors.enableSensor("ORIENTATION");
+                sensors.getState(function(values) {
+                    console.log('values');
+                    console.log(values);
+                    var orientation;
+                    switch (axis) {
+                        case "azimuth":
+                            orientation = values[0];
+                            break;
+                        case "pitch":
+                            orientation = values[1];
+                            break;
+                        case "roll":
+                            orientation = values[2];
+                            break;
+                    }
+                    console.log("hay orientation");
+                    console.log('orientation');
+                    console.log(orientation);
+                    if (!orientation) {
+                        console.log("NAN!!!!");
+                        orientation = "NaN";
+                    }
+                    console.log("orientation: " + orientation);
+                    bluetooth.write(orientation.toString()).then(function() {
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + orientation + ' (º)';
+                    }, function(error) {
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
                 });
 
@@ -318,7 +372,7 @@ angular.module('bluetoothApp')
 
         function sendGyros(axis) {
             document.addEventListener("deviceready", function() {
-                $scope.sensorRead = "GIROSCOPIO";
+                $scope.sensorRead = common.translate('device-sensor-gyroscope');
                 sensors.enableSensor("GYROSCOPE");
                 sensors.getState(function(values) {
                     console.log('values');
@@ -342,9 +396,9 @@ angular.module('bluetoothApp')
                     }
                     console.log("gyro: " + gyro);
                     bluetooth.write(gyro.toString()).then(function() {
-                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + gyro + ' (rad/s)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + gyro + ' (rad/s)';
                     }, function(error) {
-                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
                 });
 
@@ -352,47 +406,36 @@ angular.module('bluetoothApp')
         }
 
         function sendProx(covered) {
-            console.log("el valor de covered");
-            console.log(covered);
-
-            //recibe covered,nCovered
             document.addEventListener("deviceready", function() {
-                $scope.sensorRead = "SENSOR DE PROXIMIDAD";
+                $scope.sensorRead = common.translate('device-sensor-proximity');
                 sensors.enableSensor("PROXIMITY");
                 sensors.getState(function(values) {
-                    console.log("values");
-                    console.log(values);
                     var isCovered;
                     if (!values || values.length === 0) {
-                        console.log("NAN!!!!");
                         isCovered = "NaN";
                     } else {
                         if (values[0] === 0) {
                             //está tapado
-                            console.log("entro en el if");
                             if (covered === 'covered') {
                                 isCovered = true;
-                                $scope.sensorValue = "el sensor está tapado";
+                                $scope.sensorValue = common.translate('device-sensor-light-covered');
                             } else {
                                 isCovered = false;
-                                $scope.sensorValue = "el sensor está tapado";
+                                $scope.sensorValue = common.translate('device-sensor-light-covered');
                             }
                         } else {
                             //no está tapado
-                            console.log("entro en el else");
                             if (covered === 'covered') {
                                 isCovered = false;
-                                $scope.sensorValue = "el sensor no está tapado";
+                                $scope.sensorValue = common.translate('device-sensor-light-not-covered');
                             } else {
                                 isCovered = true;
-                                $scope.sensorValue = "el sensor no está tapado";
+                                $scope.sensorValue = common.translate('device-sensor-light-not-covered');
                             }
                         }
                     }
-                    console.log("isCovered");
-                    console.log(isCovered);
                     bluetooth.write(isCovered.toString()).then(function() {}, function(error) {
-                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
                 });
             });
@@ -402,12 +445,11 @@ angular.module('bluetoothApp')
 
         function sendLight() {
             document.addEventListener("deviceready", function() {
-                $scope.sensorRead = "SENSOR DE LUZ";
+                $scope.sensorRead = common.translate('device-sensor-light');
                 sensors.enableSensor("LIGHT");
                 sensors.getState(function(values) {
                     var light;
                     if (!values || values.length === 0) {
-                        console.log("NAN!!!!");
                         light = "NaN";
                     } else {
                         light = values[0];
@@ -416,7 +458,7 @@ angular.module('bluetoothApp')
                     bluetooth.write(light.toString()).then(function() {
                         $scope.sensorValue = light + ' (lx)';
                     }, function(error) {
-                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
                 });
 
@@ -426,12 +468,10 @@ angular.module('bluetoothApp')
 
 
         function sendMagnetic(axis) {
-            $scope.sensorRead = "SENSOR DE CAMPO MAGNÉTICO";
+            $scope.sensorRead = common.translate('device-sensor-magnetic');
             document.addEventListener("deviceready", function() {
                 sensors.enableSensor("MAGNETIC_FIELD");
                 sensors.getState(function(values) {
-                    console.log('values');
-                    console.log(values);
                     var magnetic;
                     switch (axis) {
                         case "x":
@@ -444,16 +484,13 @@ angular.module('bluetoothApp')
                             magnetic = values[2];
                             break;
                     }
-                    console.log("hay magnetic");
                     if (!magnetic) {
-                        console.log("NAN!!!!");
                         magnetic = "NaN";
                     }
-                    console.log("magnetic: " + magnetic);
                     bluetooth.write(magnetic.toString()).then(function() {
-                        $scope.sensorValue = 'El valor en el eje ' + axis + 'es: ' + magnetic + ' (µT)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + magnetic + ' (µT)';
                     }, function(error) {
-                        alert('No hemos podido enviar el mensaje por Bluetooth ' + JSON.stringify(error));
+                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
                 });
 
@@ -461,59 +498,44 @@ angular.module('bluetoothApp')
         }
 
 
-        $scope.twitterConfig = function(options) {
+        function twitterConfig(options) {
             configT = window.twitterWrap.configTwitter(options);
-        };
+        }
 
-        $scope.sendTwitter = function(msg) {
-          var messages='';
+        function sendTwitter(msg) {
+            var messages = '';
             if (configT.config) {
                 window.twitterWrap.sendTwitter(msg, configT, function(err, res, req) {
-                  console.log("req statusCode");
-                  console.log(req.statusCode);
+                    console.log("req statusCode");
+                    console.log(req.statusCode);
                     if (req.statusCode !== 200) {
-                      console.log("entro");
+                        console.log("entro");
                         switch (req.statusCode) {
                             case 401:
-                                common.showAlert('Error enviando tweet', 'Credenciales de Twitter incorrectas');
-                                $scope.tweetMessage = 'Error: credenciales incorrectas';
+                                if (!toast) {
+                                    common.showAlert('Error al publicar tweet', 'Credenciales de Twitter incorrectas');
+                                    toast = true;
+                                    $scope.tweetMessage = 'Error: credenciales incorrectas';
+                                }
                                 break;
                             case 403:
-                                common.showAlert('Error enviando tweet', 'El estado es un duplicado');
+                                common.showAlert('Error al publicar tweet ' + msg, 'El estado es un duplicado');
                                 $scope.tweetMessage = 'Error: el estado es un duplicado';
                                 break;
                         }
-                    }else{
-                      if(messages){
-                        messages = messages + ', ' + msg;
-                      } else{
-                        messages = msg;
-                      }
-                      $scope.tweetMessage = 'Se ha publicado en Twitter:' + messages;
+                    } else {
+                        if (messages) {
+                            messages = messages + ', ' + msg;
+                        } else {
+                            messages = msg;
+                        }
+                        $scope.tweetMessage = 'Se ha publicado en Twitter:' + messages;
                     }
                 });
             } else {
                 common.showAlert('Error enviando tweet', 'No has configurado las credenciales de Twitter');
             }
-        };
-
-        $scope.toggle = function(time) {
-            toggleTime = parseFloat(time);
-            if (toggleTime < 0.05) {
-                toggleTime = 0.05;
-            }
-            if (toggle) {
-                console.log('no hago nada');
-            } else {
-                toggle = setInterval(function() {
-                    window.plugins.flashlight.toggle();
-                    $scope.torchStatus = 'La linterna está parpadeando';
-                }, toggleTime * 1000);
-            }
-        };
-
-
-
+        }
 
 
         document.addEventListener("backbutton", function() {

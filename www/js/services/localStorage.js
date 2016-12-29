@@ -1,4 +1,4 @@
-angular.module('bluetoothApp')
+angular.module('bitbloqCom')
     .service('localStorage', function($window) {
         console.log('local storage service loaded');
         var exports = {};

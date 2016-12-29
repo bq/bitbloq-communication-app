@@ -1,4 +1,4 @@
-angular.module('bluetoothApp')
+angular.module('bitbloqCom')
     .controller('MenuCtrl', function($scope, bluetooth, common) {
         console.log('MenuCtrl');
         $scope.common = common;
