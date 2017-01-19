@@ -1,16 +1,16 @@
-<ion-view view-title="Bitbloq">
+<ion-view view-title="Bitbloq Connect">
     <ion-content>
         <div class="card">
             <div class="item item-divider" ng-class="{'data-received':bluetoothData}">
-                {{'device-board-is-sending' | translate}}
+                {{'device-is-receiving' | translate}}
             </div>
             <div class="item item-text-wrap">
                 {{bluetoothData}}
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider">
-              {{'device-sound' | translate}}
+            <div class="item item-divider" ng-class="{'data-received':soundToPlay}">
+                {{'device-sound' | translate}}
             </div>
             <div class="item item-text-wrap">
                 <i class="icon" ng-class="soundToPlay?'ion-android-volume-up':'ion-android-volume-mute'"></i>
@@ -23,15 +23,16 @@
             </div>
             <div class="item item-text-wrap">
                 <div class="speech">
-                    <img class="speech-search" ng-click="send(recognizedText)" src="img/lupa.png"/>
-                    <input id="transcript" name="q" placeholder="Envía comandos" type="text" value="{{ recognizedText }}"/>
+                    <input id="transcript" ng-model="recognizedText.text" name="q" placeholder="Envía comandos" type="text"/>
                     <img class="speech-voice" ng-click="record()" src="img/microphone.gif"/>
                 </div>
+                <button ng-disabled="listening" class="button button-send" ng-click="send(recognizedText.text)">{{buttonText}} </button>
                 {{textSended}}
             </div>
+
         </div>
         <div class="card">
-            <div class="item item-divider">
+            <div class="item item-divider" ng-class="{'data-received':torchChange}">
                 {{'device-torch' | translate}}
             </div>
             <div class="item item-text-wrap">
@@ -41,7 +42,9 @@
                 <div ng-show="isOn">
                     <img class="bulb-icon" src="img/bulb_turnon.png">{{torchStatus}}
                 </div>
-
+                <div ng-show="isToggling">
+                    <img class="bulb-icon" src="img/bulb_turnon.png">{{torchStatus}}
+                </div>
             </div>
         </div>
 
@@ -58,11 +61,10 @@
 
         <div class="card">
             <div class="item item-divider" ng-class="{'data-received':sensorRead}">
-                {{sensorRead}}
+                {{sensorRead?sensorRead:('device-sensors'|translate)}}
             </div>
             <div class="item item-text-wrap">
-                {{'device-sensor-value' | translate}}:
-                {{sensorValue}}
+                {{sensorValue?sensorValue:('device-sensors-values'|translate)}}
             </div>
         </div>
     </ion-content>

@@ -8,48 +8,54 @@
     },
     "installed_plugins": {
         "com.fabiorogeriosj.sensors": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
+        },
+        "com.phonegap.plugins.nativesettingsopener": {
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-bluetooth-serial": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-flashlight": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-lightSensor": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-nativeaudio": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
+        },
+        "cordova.plugins.diagnostic.api-22": {
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         },
         "org.apache.cordova.speech.speechrecognition": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.ionicframework.bluetoothapp123603"
+            "PACKAGE_NAME": "com.bq.bitbloq.connect"
         }
     }
 }

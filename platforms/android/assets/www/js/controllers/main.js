@@ -1,15 +1,19 @@
 angular.module('bitbloqCom')
-    .controller('MainCtrl', function($scope, localStorage, bluetooth, $rootScope, $interval, $ionicPlatform, $ionicPopup, common, $translate) {
+    .controller('MainCtrl', function($scope, bluetooth, $rootScope, $interval, $ionicPlatform, $ionicPopup, common, $translate) {
 
         $scope.soundToPlay = '';
         $scope.loaded = {};
         $scope.lastSoundPlayed = '';
         $scope.bluetoothData = '';
-        $scope.torchStatus = 'La linterna está apagada';
+        $scope.torchStatus = common.translate('device-torch-off');
         $scope.isOn = false;
         $scope.isOff = true;
-        $scope.recognizedText = "";
+        $scope.isToggling = false;
+        $scope.recognizedText = {};
         $scope.textSended = "";
+        $scope.buttonText = common.translate('buttonspad-send');
+        $scope.torchChange = '';
+        $scope.listening = false;
         var configT = {};
         var flashTimer = false;
         var intensityFloat = 100;
@@ -17,14 +21,12 @@ angular.module('bitbloqCom')
         var toggleTime = 1;
         var toast = false;
 
-
-
         $rootScope.$on('bluetoothSerial:write', function(evt, data) {
             $scope.bluetoothData = data;
             $scope.$apply();
         });
-        $rootScope.$on('bluetoothSerial:turnonFlashlight', function(evt, data) {
-            turnonFlashlight(data);
+        $rootScope.$on('bluetoothSerial:turnonFlashlight', function(evt) {
+            turnonFlashlight();
         });
         $rootScope.$on('bluetoothSerial:turnoffFlashlight', function(evt) {
             turnoffFlashlight();
@@ -76,62 +78,42 @@ angular.module('bitbloqCom')
             $scope.$apply();
         });
 
-        $rootScope.$on('bluetoothSerial:readMagnetic', function(evt) {
-            sendMagnetic();
+        $rootScope.$on('bluetoothSerial:readMagnetic', function(evt, axis) {
+            sendMagnetic(axis);
             $scope.$apply();
         });
 
 
         $rootScope.$on('bluetoothSerial:playSound', function(evt, data) {
-            $scope.bluetoothData = '';
-            $scope.soundToPlay = data;
-            $scope.$apply();
-            if ($scope.loaded[data.replace(/\s/g, '')]) {
-                if ($scope.lastSoundPlayed.length > 0) {
-                    window.plugins.NativeAudio.stop($scope.lastSoundPlayed);
-                }
-                window.plugins.NativeAudio.play(data); // Play audio track
-                $scope.soundToPlay = '';
-                $scope.lastSoundPlayed = data;
-            } else {
-                window.plugins.NativeAudio.preloadComplex(data, common.getAudioRoute(data), 1, 1, 0, function(msg) {
-                    $scope.loaded[data.replace(/\s/g, '')] = true;
-                    if ($scope.lastSoundPlayed.length > 0) {
-                        window.plugins.NativeAudio.stop($scope.lastSoundPlayed);
-                    }
-                    window.plugins.NativeAudio.play(data); // Play audio track
-                    $scope.soundToPlay = '';
-                    $scope.lastSoundPlayed = data;
-                }, function(msg) {
-                    console.log('error: ' + msg); // Loading error
-                });
-            }
-
+            playSound(data);
         });
 
 
 
         $scope.record = function() {
-            $scope.textSended = common.translate('device-sending-message');
+            $scope.listening = true;
+            $scope.recognizedText.text = '';
+            $scope.buttonText = common.translate('device-listening-message');
             var recon = '';
             var recognition = new SpeechRecognition();
             recognition.lang = navigator.language || navigator.userLanguage;
 
             recognition.onresult = function(event) {
                 if (event.results.length > 0) {
-                    $scope.recognizedText = event.results[0][0].transcript;
-                    recon = event.results[0][0].transcript.replace(/\s+^/gm, '');
-                    bluetooth.write(recon).then(function() {
-                        $scope.textSended = common.translate('device-message-sended');
-                    }, function(error) {
-                        common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
-                    });
+                    //$scope.recognizedText = event.results[0][0].transcript;
+                    setRecognized(event.results[0][0].transcript.replace(/\s+^/gm, ''));
+                    $scope.listening = false;
+                    $scope.buttonText = common.translate('buttonspad-send');
                     $scope.$apply();
                 }
             };
 
             recognition.start();
         };
+
+        function setRecognized(text){
+            $scope.recognizedText.text = text;
+        }
 
         $scope.send = function(message) {
             bluetooth.write(message).then(null, function(error) {
@@ -140,12 +122,35 @@ angular.module('bitbloqCom')
         };
 
 
-
-        function turnonFlashlight(intensity) {
-            intensityFloat = parseFloat(intensity);
-            if (intensityFloat > 100) {
-                intensityFloat = 100;
+        function playSound(sound) {
+            $scope.bluetoothData = '';
+            $scope.soundToPlay = sound;
+            $scope.$apply();
+            if ($scope.loaded[sound.replace(/\s/g, '')]) {
+                if ($scope.lastSoundPlayed.length > 0) {
+                    window.plugins.NativeAudio.stop($scope.lastSoundPlayed);
+                }
+                window.plugins.NativeAudio.play(sound); // Play audio track
+                $scope.soundToPlay = '';
+                $scope.lastSoundPlayed = sound;
+            } else {
+                window.plugins.NativeAudio.preloadComplex(sound, common.getAudioRoute(sound), 1, 1, 0, function(msg) {
+                    $scope.loaded[sound.replace(/\s/g, '')] = true;
+                    if ($scope.lastSoundPlayed.length > 0) {
+                        window.plugins.NativeAudio.stop($scope.lastSoundPlayed);
+                    }
+                    window.plugins.NativeAudio.play(sound); // Play audio track
+                    $scope.soundToPlay = '';
+                    $scope.lastSoundPlayed = sound;
+                }, function(msg) {
+                    console.log('Error: ' + msg); // Loading error
+                });
             }
+
+        }
+
+        function turnonFlashlight() {
+            $scope.torchChange = 'on';
 
             if (flashTimer) {
                 console.log('está flashTimer en on');
@@ -159,15 +164,14 @@ angular.module('bitbloqCom')
                     if (isAvailable) {
                         window.plugins.flashlight.switchOn(
                             function() {
+                                console.log("is ON!");
                                 $scope.isOn = true;
                                 $scope.isOff = false;
                                 $scope.torchStatus = common.translate('device-torch-on');
+                                console.log($scope.torchStatus);
                                 $scope.$apply();
                             }, // optional success callback
-                            function() {}, // optional error callback
-                            {
-                                intensity: intensityFloat / 100
-                            } // optional as well
+                            function() {} // optional as well
                         );
                     } else {
                         common.showAlert('Error', common.translate('device-flashlight-error'));
@@ -177,11 +181,11 @@ angular.module('bitbloqCom')
         }
 
         function turnoffFlashlight() {
+            $scope.torchChange = 'off';
             if (flashTimer) {
                 console.log('está flashTimer en off');
             } else {
                 console.log('no hay flashTimer en off');
-
                 flashTimer = true;
                 setTimeout(function() {
                     flashTimer = false;
@@ -190,12 +194,17 @@ angular.module('bitbloqCom')
                     if (isAvailable) {
                         window.plugins.flashlight.switchOff(
                             function(success) {
+                                console.log("is OFF!");
                                 $scope.isOn = false;
                                 $scope.isOff = true;
                                 $scope.torchStatus = common.translate('device-torch-off');
+                                console.log("en off");
+                                console.log($scope.torchStatus);
                                 $scope.$apply();
                             },
                             function(error) {
+                                console.log("error");
+                                console.log(error);
                                 $scope.isOn = true;
                                 $scope.isOff = false;
                             }
@@ -209,6 +218,7 @@ angular.module('bitbloqCom')
 
 
         function toggle(time) {
+            $scope.torchChange = 'toggle';
             toggleTime = parseFloat(time);
             if (toggleTime < 0.05) {
                 toggleTime = 0.05;
@@ -219,6 +229,9 @@ angular.module('bitbloqCom')
                 toggleTimer = setInterval(function() {
                     window.plugins.flashlight.toggle();
                     $scope.torchStatus = common.translate('device-torch-toggle');
+                    $scope.isToggling = true;
+                    $scope.isOff = false;
+                    $scope.$apply();
                 }, toggleTime * 1000);
             }
         }
@@ -228,8 +241,6 @@ angular.module('bitbloqCom')
                 $scope.sensorRead = "ACELERÓMETRO para medir aceleración lineal";
                 sensors.enableSensor("LINEAR_ACCELERATION");
                 sensors.getState(function(values) {
-                    console.log('values');
-                    console.log(values);
                     var laccel;
                     switch (axis) {
                         case "x":
@@ -242,14 +253,12 @@ angular.module('bitbloqCom')
                             laccel = values[2];
                             break;
                     }
-                    console.log("hay acceeeel");
                     if (!laccel) {
-                        console.log("NAN!!!!");
                         laccel = "NaN";
                     }
                     console.log("laccel: " + laccel);
                     bluetooth.write(laccel.toString()).then(function() {
-                        $scope.sensorValue =  common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + laccel + ' (m/s²)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + ' ' + common.translate('device-is') + ': ' + laccel + ' (m/s²)';
                     }, function(error) {
                         common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
@@ -264,8 +273,6 @@ angular.module('bitbloqCom')
                 $scope.sensorRead = "ACELERÓMETRO para medir aceleración";
                 sensors.enableSensor("ACCELEROMETER");
                 sensors.getState(function(values) {
-                    console.log('values');
-                    console.log(values);
                     var accel;
                     switch (axis) {
                         case "x":
@@ -278,14 +285,12 @@ angular.module('bitbloqCom')
                             accel = values[2];
                             break;
                     }
-                    console.log("hay acceeeel");
                     if (!accel) {
-                        console.log("NAN!!!!");
                         accel = "NaN";
                     }
                     console.log("accel: " + accel);
                     bluetooth.write(accel.toString()).then(function() {
-                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + accel + ' (m/s²)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + ' ' + common.translate('device-is') + ': ' + accel + ' (m/s²)';
                     }, function(error) {
                         common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
@@ -301,8 +306,6 @@ angular.module('bitbloqCom')
                 $scope.sensorRead = common.translate('device-sensor-gravity');
                 sensors.enableSensor("GRAVITY");
                 sensors.getState(function(values) {
-                    console.log('values');
-                    console.log(values);
                     var gravity;
                     switch (axis) {
                         case "x":
@@ -317,12 +320,10 @@ angular.module('bitbloqCom')
                     }
                     console.log("hay gravity");
                     if (!gravity) {
-                        console.log("NAN!!!!");
                         gravity = "NaN";
                     }
-                    console.log("gravity: " + gravity);
                     bluetooth.write(gravity.toString()).then(function() {
-                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + gravity + ' (m/s²)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + ' ' + common.translate('device-is') + ': ' + gravity + ' (m/s²)';
                     }, function(error) {
                         common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
@@ -338,8 +339,6 @@ angular.module('bitbloqCom')
                 $scope.sensorRead = common.translate('device-sensor-orientation');
                 sensors.enableSensor("ORIENTATION");
                 sensors.getState(function(values) {
-                    console.log('values');
-                    console.log(values);
                     var orientation;
                     switch (axis) {
                         case "azimuth":
@@ -352,16 +351,12 @@ angular.module('bitbloqCom')
                             orientation = values[2];
                             break;
                     }
-                    console.log("hay orientation");
-                    console.log('orientation');
-                    console.log(orientation);
                     if (!orientation) {
-                        console.log("NAN!!!!");
                         orientation = "NaN";
                     }
                     console.log("orientation: " + orientation);
                     bluetooth.write(orientation.toString()).then(function() {
-                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + orientation + ' (º)';
+                        $scope.sensorValue = common.translate('the') + ' ' + axis + ' ' + common.translate('device-is') + ': ' + orientation + ' (º)';
                     }, function(error) {
                         common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
@@ -375,8 +370,6 @@ angular.module('bitbloqCom')
                 $scope.sensorRead = common.translate('device-sensor-gyroscope');
                 sensors.enableSensor("GYROSCOPE");
                 sensors.getState(function(values) {
-                    console.log('values');
-                    console.log(values);
                     var gyro;
                     switch (axis) {
                         case "x":
@@ -396,7 +389,7 @@ angular.module('bitbloqCom')
                     }
                     console.log("gyro: " + gyro);
                     bluetooth.write(gyro.toString()).then(function() {
-                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + gyro + ' (rad/s)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + ' ' + common.translate('device-is') + ': ' + gyro + ' (rad/s)';
                     }, function(error) {
                         common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
@@ -468,6 +461,7 @@ angular.module('bitbloqCom')
 
 
         function sendMagnetic(axis) {
+          console.log("sendMagnetic!!");
             $scope.sensorRead = common.translate('device-sensor-magnetic');
             document.addEventListener("deviceready", function() {
                 sensors.enableSensor("MAGNETIC_FIELD");
@@ -487,8 +481,10 @@ angular.module('bitbloqCom')
                     if (!magnetic) {
                         magnetic = "NaN";
                     }
+                    console.log("magnetic");
+                    console.log(magnetic);
                     bluetooth.write(magnetic.toString()).then(function() {
-                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + common.translate('device-is') + ': ' + magnetic + ' (µT)';
+                        $scope.sensorValue = common.translate('device-value-axis') + ' ' + axis + ' ' + common.translate('device-is') + ': ' + magnetic + ' (µT)';
                     }, function(error) {
                         common.showAlert('Error', commmon.translate('device-bluetooth-error') + ': ' + JSON.stringify(error));
                     });
@@ -509,18 +505,17 @@ angular.module('bitbloqCom')
                     console.log("req statusCode");
                     console.log(req.statusCode);
                     if (req.statusCode !== 200) {
-                        console.log("entro");
                         switch (req.statusCode) {
                             case 401:
                                 if (!toast) {
-                                    common.showAlert('Error al publicar tweet', 'Credenciales de Twitter incorrectas');
+                                    common.showAlert(common.translate('device-twitter-error') + ' ' + msg, common.translate('device-twitter-error-credentials'));
                                     toast = true;
-                                    $scope.tweetMessage = 'Error: credenciales incorrectas';
+                                    $scope.tweetMessage = common.translate('device-twitter-error') + ' ' + msg + ': ' + common.translate('device-twitter-error-credentials');
                                 }
                                 break;
                             case 403:
-                                common.showAlert('Error al publicar tweet ' + msg, 'El estado es un duplicado');
-                                $scope.tweetMessage = 'Error: el estado es un duplicado';
+                                common.showAlert(common.translate('device-twitter-error') + ' ' + msg, common.translate('device-twitter-error-duplicate'));
+                                $scope.tweetMessage = common.translate('device-twitter-error') + ' ' + msg + ': ' + common.translate('device-twitter-error-duplicate');
                                 break;
                         }
                     } else {
@@ -529,14 +524,14 @@ angular.module('bitbloqCom')
                         } else {
                             messages = msg;
                         }
-                        $scope.tweetMessage = 'Se ha publicado en Twitter:' + messages;
+                        $scope.tweetMessage = common.translate('device-twitter-published') + ': ' + messages;
                     }
                 });
             } else {
-                common.showAlert('Error enviando tweet', 'No has configurado las credenciales de Twitter');
+                common.showAlert(common.translate('device-twitter-error'), common.translate('device-twitter-error-no-credentials'));
+                $scope.tweetMessage = common.translate('device-twitter-error') + ': ' + common.translate('device-twitter-error-no-credentials');
             }
         }
-
 
         document.addEventListener("backbutton", function() {
             // pass exitApp as callbacks to the switchOff method

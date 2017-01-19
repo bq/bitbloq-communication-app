@@ -24,6 +24,7 @@ angular.module('bitbloqCom', [
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
+
     });
 })
 
@@ -69,15 +70,17 @@ angular.module('bitbloqCom', [
 
 
     $translateProvider.translations('en', {
-        'devices-intro': 'Pair your Bluetooth device, then search your device here, and click it to connect',
-        'devices-button-search--devices': 'Search devices',
+        'devices-intro': 'Select a device to connect.',
+        'devices-button-search--more': 'Search more devices',
         'menu-buttons': 'Commands Buttons',
         'menu-sound': 'Sound',
+        'menu-devices': 'Devices',
+        'menu-main': 'Control',
         'buttonspad-send': 'Send',
         'buttonspad-add--button': 'Add',
         'menu-no--connection': 'Connection lost',
-        'menu-connected': 'Connected',
-        'device-board-is-sending': 'Board is sending...',
+        'the': 'The',
+        'device-is-receiving': 'Device is receiving...',
         'device-sound': 'The device is playing the sound...',
         'device-send-voice': 'Send voice commands to Bitbloq',
         'device-torch': 'Control device flashlight',
@@ -85,8 +88,11 @@ angular.module('bitbloqCom', [
         'device-torch-off': 'Flashlight is off.',
         'device-torch-toggle': 'Flashlight is flickering',
         'device-twitter': 'Twitter',
+        'device-twitter-published': 'You have posted in Twitter',
+        'device-sensors': 'Sensors',
+        'device-sensors-values': 'Waiting for sensors values request',
         'device-sensor-value': 'Value',
-        'device-sending-message': 'Sending message...',
+        'device-listening-message': 'Listening...',
         'device-message-sended': 'Message sended.',
         'device-sensor-gravity': 'Gravity sensor',
         'device-sensor-orientation': 'Orientation sensor',
@@ -99,19 +105,25 @@ angular.module('bitbloqCom', [
         'device-sensor-light-covered': 'Light sensor is covered',
         'device-sensor-light-not-covered': 'Light sensor is not covered',
         'device-bluetooth-error': 'It was impossible to send the message via Bluetooth',
-        'device-flashlight-error': 'Flashlight not available on this device'
+        'device-flashlight-error': 'Flashlight not available on this device',
+        'device-twitter-error': 'Error publishing tweet',
+        'device-twitter-error-credentials': 'Incorrect Twitter credentials',
+        'device-twitter-error-duplicate': 'Status is a duplicate',
+        'device-twitter-error-no-credentials': 'You have not configured Twitter credentials'
 
     });
     $translateProvider.translations('es', {
-        'devices-intro': 'Empieza buscando tu dispositivo bluetooth y haciendo click en él para conectarte',
-        'devices-button-search--devices': 'Buscar dispositivos',
+        'devices-intro': 'Selecciona un dispositivo al que conectarse.',
+        'devices-button-search--more': 'Buscar más dispositivos',
         'menu-buttons': 'Botonera',
         'menu-sound': 'Sonido',
+        'menu-devices': 'Dispositivos',
+        'menu-main': 'Control',
         'buttonspad-send': 'Enviar',
         'buttonspad-add--button': 'Crear Nuevo',
         'menu-no--connection': 'Sin conexíon',
-        'menu-connected': 'Conectado',
-        'device-board-is-sending': 'La placa está enviando...',
+        'the': 'El',
+        'device-is-receiving': 'El dispositivo está recibiendo...',
         'device-sound': 'El dispositivo está emitiendo el sonido...',
         'device-send-voice': 'Envía comandos por voz a Bitbloq',
         'device-torch': 'Controla la linterna',
@@ -119,8 +131,11 @@ angular.module('bitbloqCom', [
         'device-torch-off': 'La linterna está apagada.',
         'device-torch-toggle': 'La linterna está parpadeando',
         'device-twitter': 'Twitter',
+        'device-twitter-published': 'Se ha publicado en Twitter',
+        'device-sensors': 'Sensores',
+        'device-sensors-values': 'Esperando petición de valores de sensores',
         'device-sensor-value': 'Valor',
-        'device-sending-message': 'Enviando mensaje...',
+        'device-listening-message': 'Escuchando...',
         'device-message-sended': 'Mensaje enviado.',
         'device-sensor-gravity': 'Sensor de gravedad',
         'device-sensor-orientation': 'Sensor de orientación',
@@ -133,7 +148,13 @@ angular.module('bitbloqCom', [
         'device-sensor-light-covered': 'El sensor de luz está tapado',
         'device-sensor-light-not-covered': 'El sensor de luz no está tapado',
         'device-bluetooth-error': 'No hemos podido enviar el mensaje por Bluetooth',
-        'device-flashlight-error': 'Linterna no disponible en este dispositivo'
+        'device-flashlight-error': 'Linterna no disponible en este dispositivo',
+        'device-twitter-error': 'Error al publicar tweet',
+        'device-twitter-error-credentials': 'Credenciales de Twitter incorrectas',
+        'device-twitter-error-duplicate': 'El mensaje es un duplicado',
+        'device-twitter-error-no-credentials': 'No has configurado las credenciales de Twitter'
+
     });
-    $translateProvider.preferredLanguage('en');
+
+    $translateProvider.preferredLanguage('es');
 });

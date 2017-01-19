@@ -10,16 +10,17 @@
             {{'menu-no--connection' | translate}}
         </label>
         <label class="color color--green" ng-show="common.itsConnected">
-            {{'menu-connected' | translate}} to {{common.selectedDevice.name}}
+            <i class="icon ion-bluetooth icon-inline"></i><span class="item-text-wrap icon-inline">{{common.selectedDevice.name}}</span>
         </label>
+      </div>
     </ion-nav-buttons>
 </ion-nav-bar>
 <!--<ion-nav-view name="menuContent"></ion-nav-view>-->
 <ion-tabs class="tabs-icon-top tabs-positive">
-    <ion-tab href="#/app/main" icon="ion-ios-alarm" title="Main">
+    <ion-tab href="#/app/main" icon="ion-arrow-swap" title="{{'menu-main' | translate}}">
         <ion-nav-view name="main-tab"></ion-nav-view>
     </ion-tab>
-    <ion-tab href="#/app/devices" icon="ion-settings" title="Devices">
+    <ion-tab href="#/app/devices" icon="ion-navicon-round" title="{{'menu-devices'|translate}}">
         <ion-nav-view name="devices-tab"></ion-nav-view>
     </ion-tab>
 </ion-tabs>

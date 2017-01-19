@@ -1,8 +1,8 @@
 angular.module('bitbloqCom')
-    .service('common', function($location, $ionicPopup, $filter) {
+    .service('common', function($location, $ionicPopup, $filter, $translate) {
         console.log('common service loaded');
         var exports = {};
-
+        var language= navigator.language.split('-')[0] || navigator.userLanguage.split('-')[0] || 'en';
         exports.actualDevice = null;
 
         exports.itsConnected = false;
@@ -29,6 +29,8 @@ angular.module('bitbloqCom')
                 console.log('Thank you for not eating my delicious ice cream cone');
             });
         };
+
+        $translate.use(language);
 
         return exports;
     });

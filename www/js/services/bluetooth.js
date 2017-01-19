@@ -33,7 +33,7 @@ angular.module('bitbloqCom')
                             $rootScope.$emit('bluetoothSerial:write', data.split(/-(.+)?/)[1]);
                             break;
                         case 'turnonFlashlight':
-                            $rootScope.$emit('bluetoothSerial:turnonFlashlight', data.split(/-(.+)?/)[1]);
+                            $rootScope.$emit('bluetoothSerial:turnonFlashlight');
                             break;
                         case 'turnoffFlashlight':
                             $rootScope.$emit('bluetoothSerial:turnoffFlashlight');
@@ -70,12 +70,12 @@ angular.module('bitbloqCom')
                         case 'readLight':
                             $rootScope.$emit('bluetoothSerial:readLight');
                             break;
-                        case 'readLight':
+                        case 'readMagnetic':
                             $rootScope.$emit('bluetoothSerial:readMagnetic', data.split(/-(.+)?/)[1]);
                             break;
-                        case '':
+                        default:
+                            $rootScope.$emit('bluetoothSerial:write', data.split(/-(.+)?/)[0]);
                             break;
-
                     }
                     //    $rootScope.$emit('bluetoothSerial:emit', data);
                 }, function(error) {

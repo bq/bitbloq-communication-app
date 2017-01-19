@@ -17,12 +17,13 @@
   "cordovaPlugins": [
     "cordova-plugin-flashlight",
     "cordova-plugin-device",
-    "cordova-plugin-console",
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "cordova-plugin-nativeaudio"
+    "cordova-plugin-nativeaudio",
+    "cordova-plugin-console@~1.0.4",
+    "cordova.plugins.diagnostic.api-22"
   ],
   "cordovaPlatforms": [
     "ios",

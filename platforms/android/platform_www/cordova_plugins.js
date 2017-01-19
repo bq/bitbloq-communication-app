@@ -9,6 +9,14 @@ module.exports = [
         ]
     },
     {
+        "id": "com.phonegap.plugins.nativesettingsopener.Settings",
+        "file": "plugins/com.phonegap.plugins.nativesettingsopener/www/settings.js",
+        "pluginId": "com.phonegap.plugins.nativesettingsopener",
+        "clobbers": [
+            "cordova.plugins.settings"
+        ]
+    },
+    {
         "id": "cordova-plugin-bluetooth-serial.bluetoothSerial",
         "file": "plugins/cordova-plugin-bluetooth-serial/www/bluetoothSerial.js",
         "pluginId": "cordova-plugin-bluetooth-serial",
@@ -71,6 +79,14 @@ module.exports = [
         "pluginId": "cordova-plugin-statusbar",
         "clobbers": [
             "window.StatusBar"
+        ]
+    },
+    {
+        "id": "cordova.plugins.diagnostic.api-22.Diagnostic",
+        "file": "plugins/cordova.plugins.diagnostic.api-22/www/android/diagnostic.js",
+        "pluginId": "cordova.plugins.diagnostic.api-22",
+        "clobbers": [
+            "cordova.plugins.diagnostic"
         ]
     },
     {
@@ -151,9 +167,10 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "com.fabiorogeriosj.sensors": "0.7.0",
+    "com.phonegap.plugins.nativesettingsopener": "1.3",
     "cordova-plugin-bluetooth-serial": "0.4.6",
     "cordova-plugin-compat": "1.1.0",
-    "cordova-plugin-console": "1.0.4",
+    "cordova-plugin-console": "1.0.5",
     "cordova-plugin-device": "1.1.3",
     "cordova-plugin-flashlight": "3.2.0",
     "cordova-plugin-inappbrowser": "1.6.2-dev",
@@ -162,6 +179,7 @@ module.exports.metadata =
     "cordova-plugin-splashscreen": "4.0.0",
     "cordova-plugin-statusbar": "2.2.0",
     "cordova-plugin-whitelist": "1.3.0",
+    "cordova.plugins.diagnostic.api-22": "2.3.10-api-22",
     "ionic-plugin-keyboard": "2.2.1",
     "org.apache.cordova.speech.speechrecognition": "0.1.2"
 };

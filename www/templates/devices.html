@@ -1,12 +1,13 @@
-<ion-view view-title="Dispositivos">
+<ion-view view-title="{{'menu-devices' | translate}}">
     <ion-content>
         <h4 class="title">{{ 'devices-intro' | translate}}</h4>
-        <button id="search-button" class="button" ng-click="startSearchDevices()">
-            {{'devices-button-search--devices' | translate}}
-        </button>
-        <div ng-repeat="device in devices" class="device" ng-click="connectToDevice(device)">
-            <h4>{{device.name}}</h4>
-            <p>{{device.address}}</p>
+        <div ng-class="{'device-selected':common.selectedDevice.address===device.address}" ng-repeat="device in devices" class="device" ng-click="connectToDevice(device);">
+            <h4 ng-class="{'device-selected--text':common.selectedDevice.address===device.address}">{{device.name}}</h4>
+            <p ng-class="{'device-selected--text':common.selectedDevice.address===device.address}">{{device.address}}</p>
         </div>
+        <button id="search-button" class="button" ng-click="goToBluetooth()">
+            {{'devices-button-search--more' | translate}}
+        </button>
+        {{selected}}
     </ion-content>
 </ion-view>
